@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import MainPage from "./components/MainPage";
+import Questions from "./components/Questions";
+import Result from "./components/Result";
+import Header from "./components/Header";
 
-function App() {
+function App(): JSX.Element {
+  const [isTestStarted, setIsTestStarted] = useState<boolean>(false);
+  const [isTestFinished, setIsTestFinished] = useState<boolean>(false);
+
+  const startTest = (isStarted: boolean): void => {
+    setIsTestStarted(isStarted);
+  };
+
+  const finishTest = (isFinished: boolean): void => {
+    setIsTestFinished(isFinished);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      {!isTestStarted && <MainPage startTestFn={startTest} />}
+      {isTestStarted && !isTestFinished && (
+        <Questions finishTestFn={finishTest} />
+      )}
+      {isTestFinished && <Result />}
+    </>
   );
 }
 
